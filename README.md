@@ -1,5 +1,7 @@
 # ring-middleware-format [![Continuous Integration status](https://secure.travis-ci.org/ngrunwald/ring-middleware-format.png)](http://travis-ci.org/ngrunwald/ring-middleware-format) [![Dependencies Status](http://jarkeeper.com/ngrunwald/ring-middleware-format/status.svg)](http://jarkeeper.com/ngrunwald/ring-middleware-format)
 
+Fork from [Here](https://github.com/ngrunwald/ring-middleware-format).
+
 This is a set of middlewares that can be used to deserialize parameters sent in the :body of requests and serialize a Clojure data structure in the :body of a response to some string or binary representation. It natively handles JSON, MessagePack, YAML, Transit over JSON or Msgpack and Clojure (edn) but it can easily be extended to other custom formats, both string and binary. It is intended for the creation of RESTful APIs that do the right thing by default but are flexible enough to handle most special cases.
 
 ## Installation ##
@@ -49,7 +51,7 @@ The available formats are:
   - `:msgpack-kw` [MessagePack format](http://msgpack.org) with kwywordized keys.
   - `:yaml` YAML format
   - `:yaml-kw` YAML format with keywordized keys in `:params` and `:body-params`
-  - `:edn` edn (native Clojure format). It uses *clojure.tools.edn* and never evals code, but uses the custom tags from `*data-readers*` 
+  - `:edn` edn (native Clojure format). It uses *clojure.tools.edn* and never evals code, but uses the custom tags from `*data-readers*`
   - `:yaml-in-html` yaml in a html page (useful for browser debugging)
   - `:transit-json` Transit over JSON format
   - `:transit-msgpack` Transit over Msgpack format
@@ -65,9 +67,9 @@ Please note the default JSON, MessagePack, and YAML decoder do not keywordize th
 
 See also [wrap-restful-format](http://ngrunwald.github.com/ring-middleware-format/ring.middleware.format.html#var-wrap-restful-format) docstring for help on customizing error handling.
 
-It is possible to configure the behavior of various decoders by passing `:response-options` 
-or `:params-options` parameters to `(wrap-restful-format)`; these options are structured as 
-a map from the type of decoder to the options to use for that format. For example, to pretty-print 
+It is possible to configure the behavior of various decoders by passing `:response-options`
+or `:params-options` parameters to `(wrap-restful-format)`; these options are structured as
+a map from the type of decoder to the options to use for that format. For example, to pretty-print
 JSON responses these options could be used:
 ```clojure
 (wrap-restful-format handler :formats [:json-kw] :response-options {:json-kw {:pretty true}})
