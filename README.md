@@ -1,18 +1,11 @@
-# ring-middleware-format [![Continuous Integration status](https://secure.travis-ci.org/ngrunwald/ring-middleware-format.png)](http://travis-ci.org/ngrunwald/ring-middleware-format) [![Dependencies Status](http://jarkeeper.com/ngrunwald/ring-middleware-format/status.svg)](http://jarkeeper.com/ngrunwald/ring-middleware-format)
+[![Build Status](https://travis-ci.org/robertluo/ring-middleware-format.svg?branch=master)](https://travis-ci.org/robertluo/ring-middleware-format)
+[![Clojars Project](https://img.shields.io/clojars/v/robertluo/ring-middleware-format.svg)](https://clojars.org/robertluo/ring-middleware-format)
 
 Fork from [Here](https://github.com/ngrunwald/ring-middleware-format).
 
 This is a set of middlewares that can be used to deserialize parameters sent in the :body of requests and serialize a Clojure data structure in the :body of a response to some string or binary representation. It natively handles JSON, MessagePack, YAML, Transit over JSON or Msgpack and Clojure (edn) but it can easily be extended to other custom formats, both string and binary. It is intended for the creation of RESTful APIs that do the right thing by default but are flexible enough to handle most special cases.
 
-## Installation ##
-
-Latest stable version:
-
-[![Clojars Project](http://clojars.org/ring-middleware-format/latest-version.svg)](http://clojars.org/ring-middleware-format)
-
-Add this to your dependencies in `project.clj`.
-
-## Features ##
+## Features
 
  - Ring compatible middleware, works with any web framework build on top of Ring
  - Automatically parses requests and encodes responses according to Content-Type and Accept headers
@@ -21,12 +14,12 @@ Add this to your dependencies in `project.clj`.
  - Varied formats handled out of the box (*JSON*, *MessagePack*, *YAML*, *EDN*, *Transit over JSON or Msgpack*)
  - Pluggable system makes it easy to add to the standards encoders and decoders custom ones (proprietary format, Protobuf, specific xml, csv, etc.)
 
-## API Documentation ##
+## API Documentation
 
 <!--Full [API documentation](http://ngrunwald.github.com/ring-middleware-format) is available.-->
 API Documentation is not available online. You can clone the repository and run `lein codox` yourself.
 
-## Summary ##
+## Summary
 
 To get automatic deserialization and serialization for all supported formats with sane defaults regarding headers and charsets, just do this:
 
@@ -75,9 +68,9 @@ JSON responses these options could be used:
 (wrap-restful-format handler :formats [:json-kw] :response-options {:json-kw {:pretty true}})
 ```
 
-## Usage ##
+## Usage
 
-### Detailed Usage ###
+### Detailed Usage
 
 You can separate the params and response middlewares. This allows you to use them separately, or to customize their behaviour, with specific error handling for example. See the wrappers docstrings for more details.
 
@@ -92,7 +85,7 @@ You can separate the params and response middlewares. This allows you to use the
       (wrap-restful-response)))
 ```
 
-### Params Format Middleware ###
+### Params Format Middleware
 
 These middlewares are mostly lifted from [ring-json-params](https://github.com/mmcgrana/ring-json-params) but generalized for arbitrary decoders. The `wrap-json-params` is drop-in replacement for ring-json-params. They will decode the params in the request body, put them in a `:body-params` key and merge them in the `:params` key if they are a map.
 There are six default wrappers:
@@ -106,7 +99,7 @@ There are six default wrappers:
 
 There is also a generic `wrap-format-params` on which the others depend. Each of these wrappers take 4 optional args: `:decoder`, `:predicate`, `:binary?` and `:charset`. See `wrap-format-params` docstring for further details.
 
-### Response Format Middleware ###
+### Response Format Middleware
 
 These middlewares will take a raw data structure returned by a route and serialize it in various formats.
 
@@ -121,7 +114,7 @@ There are six default wrappers:
 
 There is also a generic `wrap-format-response` on which the others depend. Each of these wrappers take 4 optional args: `:encoders`, `:predicate`, `binary?` and `:charset`. See `wrap-format-response` docstring for further details.
 
-### Custom formats ###
+### Custom formats
 
 You can implement custom formats in two ways:
 
@@ -134,9 +127,7 @@ For exemple, this will cause all json formatted responses to be encoded in *iso-
 ```
 + You can implement the wrapper from scratch by using either or both `wrap-format-params` and `wrap-format-response`. For now, see the docs of each and how the other formats were implemented for help doing this.
 
-## Future Work ##
-
-## See Also ##
+## See Also
 
 This module aims to be both easy to use and easy to extend to new formats. However, it does not try to help with every apect of building a RESTful API, like proper error handling and method dispatching. If that is what you are looking for, you could check the modules which function more like frameworks:
 
@@ -144,7 +135,10 @@ This module aims to be both easy to use and easy to extend to new formats. Howev
 
 ## License ##
 
-Copyright &copy; 2011, 2012, 2013, 2014 Nils Grunwald<br>
+Copyright &copy; 2011, 2012, 2013, 2014 Nils Grunwald
+
 Copyright &copy; 2015-2017 Juho Teperi
+
+Copyright &copy; 2018 Luo Tian
 
 Distributed under the Eclipse Public License, the same as Clojure.
