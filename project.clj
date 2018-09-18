@@ -1,4 +1,4 @@
-(defproject robertluo/ring-middleware-format "0.9.0"
+(defproject robertluo/ring-middleware-format "0.8.1"
   :description "Ring middleware for parsing parameters and emitting
   responses in various formats (mainly JSON, YAML and Transit out of
   the box)"
