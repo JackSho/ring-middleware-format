@@ -5,8 +5,9 @@
             [clj-yaml.core :as yaml]
             [cognitect.transit :as transit]
             [clojure.java.io :as io]
-            [clojure.walk :refer [stringify-keys keywordize-keys]]
+            [clojure.walk :refer [keywordize-keys]]
             [msgpack.core :as msgpack]
+            [ring.middleware.format-response :refer [stringify-keys]]
             [clojure.string :as string])
   (:import [java.io ByteArrayInputStream ByteArrayOutputStream]))
 
@@ -78,22 +79,22 @@
 
 (deftest augments-with-msgpack-content-type
   (let [req {:content-type "application/msgpack"
-             :body (ByteArrayInputStream. (msgpack/pack (stringify-keys {:foo "bar"})))
+             :body (ByteArrayInputStream. (msgpack/pack (stringify-keys {:ns/foo "bar"})))
              :params {"id" 3}}
              resp (msgpack-echo req)]
-    (is (= {"id" 3 "foo" "bar"} (:params resp)))
-    (is (= {"foo" "bar"} (:body-params resp)))))
+    (is (= {"id" 3 "ns/foo" "bar"} (:params resp)))
+    (is (= {"ns/foo" "bar"} (:body-params resp)))))
 
 (def msgpack-kw-echo
   (wrap-msgpack-kw-params identity))
 
 (deftest augments-with-msgpack-kw-content-type
   (let [req {:content-type "application/msgpack"
-             :body (ByteArrayInputStream. (msgpack/pack (stringify-keys {:foo "bar"})))
+             :body (ByteArrayInputStream. (msgpack/pack (stringify-keys {:ns/foo "bar"})))
              :params {"id" 3}}
              resp (msgpack-kw-echo req)]
-    (is (= {"id" 3 :foo "bar"} (:params resp)))
-    (is (= {:foo "bar"} (:body-params resp)))))
+    (is (= {"id" 3 :ns/foo "bar"} (:params resp)))
+    (is (= {:ns/foo "bar"} (:body-params resp)))))
 
 (def clojure-echo
   (wrap-clojure-params identity))

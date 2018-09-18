@@ -5,7 +5,6 @@
             [clojure.java.io :as io]
             [clj-yaml.core :as yaml]
             [clojure.string :as s]
-            [clojure.walk :refer [stringify-keys]]
             [cognitect.transit :as transit]
             [msgpack.core :as msgpack])
   (:use [clojure.core.memoize :only [lu]])
@@ -251,6 +250,14 @@
       (assoc options :encoders [(make-encoder
                                   (if hf generate-hf-clojure (or encoder generate-native-clojure))
                                   (or type "application/edn"))]))))
+
+(defn stringify-keys
+  "Recursively transforms all map keys from keywords to strings with namespace."
+  {:added "1.1"}
+  [m]
+  (let [f (fn [[k v]] (if (keyword? k) [(subs (str k) 1) v] [k v]))]
+    ;; only apply to maps
+    (clojure.walk/postwalk (fn [x] (if (map? x) (into {} (map f x)) x)) m)))
 
 (defn encode-msgpack [body]
   (with-open [out-stream (ByteArrayOutputStream.)]

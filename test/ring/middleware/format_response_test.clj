@@ -4,7 +4,7 @@
         [ring.middleware.format-response])
   (:require [cheshire.core :as json]
             [clj-yaml.core :as yaml]
-            [clojure.walk :refer [stringify-keys keywordize-keys]]
+            [clojure.walk :refer [keywordize-keys]]
             [cognitect.transit :as transit]
             [msgpack.core :as msgpack]
             [clojure.string :as string])
@@ -88,7 +88,7 @@
       (.toByteArray out))))
 
 (deftest format-msgpack-hashmap
-  (let [body {:foo "bar"}
+  (let [body {:ns/foo "bar"}
         req {:body body}
         resp (msgpack-echo req)]
     (is (= body (keywordize-keys (msgpack/unpack (slurp-to-bytes (:body resp))))))
@@ -147,7 +147,7 @@
   (wrap-transit-msgpack-response identity))
 
 (deftest format-transit-msgpack-hashmap
-  (let [body {:foo "bar"}
+  (let [body {:ns/foo "bar"}
         req {:body body}
         resp (transit-msgpack-echo req)]
     (is (= body (read-transit :msgpack (:body resp))))
